@@ -2,4 +2,4 @@
 
 /home/pi/SmartPlant/startBt.sh
 /home/pi/SmartPlant/bluez/test/simple-agent
-
+sudo chmod 777 /var/run/sdp
