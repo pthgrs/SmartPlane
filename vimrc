@@ -1,4 +1,5 @@
-#~./vimrc(/home/pi/vimrc) 파일에 입력할것
+" ~./vimrc(/home/pi/vimrc) 파일에 입력할것
+" http://norux.me/13 참고
 
 set number            " line 표시를 해줍니다.
 set ai                    " auto indent
