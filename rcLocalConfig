@@ -1,0 +1,5 @@
+/etc/rc.local에 추가
+
+/home/pi/SmartPlant/startBt.sh
+/home/pi/SmartPlant/bluez/test/simple-agent
+
