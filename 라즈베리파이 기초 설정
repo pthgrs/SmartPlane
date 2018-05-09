@@ -22,13 +22,10 @@
 
 5. sudo apt-get install fonts-unfonts-core
  (한글 폰트 설치)
-
-6. reboot
  
-7. sudo apt-get install nabi
+6. sudo apt-get install nabi
   (한글 입력기 설치)
-  -> 시작메뉴 -> 기본설정 -> 입력기 -> "hangul"선택
+  -> reboot -> 시작메뉴 -> 기본설정 -> 입력기 -> "hangul"선택
 
-8. reboot
 
   
