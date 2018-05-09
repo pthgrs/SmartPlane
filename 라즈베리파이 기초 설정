@@ -1,0 +1,9 @@
+라즈베리파이 기초 설정
+
+1. sudo apt-get update
+
+2. sudo apt-get upgrade
+
+3. sudo apt-get install vim
+ ./vimrc 설정
+
