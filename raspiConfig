@@ -1,0 +1,31 @@
+라즈베리파이 기초 설정
+
+#####################################
+라즈베리파이 기본 id : pi
+라즈베리파이 기본 password : raspberry
+######################################
+
+1. sudo apt-get update
+
+2. sudo apt-get upgrade
+
+3. sudo apt-get install vim
+ -> .~/vimrc 설정
+
+4. sudo raspi-config
+ 1) Network options -> Hostname 변경
+ 2) advanced options -> expand filesystem
+ 3) interfacing options -> ssh, vnc enable
+ 4) Localistion options 
+  -> Change Locale ko_kr utf8 선택
+  -> Change Timezone -> Asia -> Seoul
+
+5. sudo apt-get install fonts-unfonts-core
+ (한글 폰트 설치)
+ 
+6. sudo apt-get install nabi im-config
+  (한글 입력기 설치)
+  sudo im-config -> "hangul" -> reboot
+
+
+  
