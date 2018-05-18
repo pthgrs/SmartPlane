@@ -2,7 +2,7 @@
 #include<wiringPi.h>                                                            
 #include<softPwm.h>                                                             
 
-#define SERVO 1                                                                 
+#define SERVO 1         // GPIO 18.                                                         
 
 int main()                                                                      
 {                                                                               
