@@ -36,7 +36,11 @@ int getHumidity(int channel){
       
       return avg; 
 }
-      
+
+void closeSensor(void){
+   spi_close(pi, spi);
+   pigpio_stop(pi);
+}
       
 
 
