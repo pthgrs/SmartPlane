@@ -10,6 +10,6 @@
 
 int initSensor(void);
 int getHumidity(unsigned char channel);
-
+void closeSensor(void); 
 
 #endif /* __SENSOR_H__
