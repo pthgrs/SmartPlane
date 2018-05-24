@@ -8,7 +8,7 @@
 #define BAUD_RATE 1000000
 #define LOOP 1000
 
-int init_sensor(void);
+int initSensor(void);
 int getHumidity(unsigned char channel);
 
 
