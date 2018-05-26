@@ -13,7 +13,7 @@ int initSensor(void){
    return 0;
 }
 
-uint16_t getSensor(int channel){
+uint16_t getSensorValue(int channel){
     uint16_t value;                                                             
     uint64_t sum = 0;                                                           
     uint16_t avg;                                                                                                                       
