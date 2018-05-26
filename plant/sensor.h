@@ -9,7 +9,7 @@
 #define LOOP 1000
 
 int initSensor(void);
-int getHumidity(unsigned char channel);
+uint16_t getSensorValue(unsigned char channel);
 void closeSensor(void); 
 
 #endif /* __SENSOR_H__
