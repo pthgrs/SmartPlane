@@ -13,7 +13,7 @@ int initSensor(void){
    return 0;
 }
 
-int getHumidity(int channel){
+uint16_t getHumidity(int channel){
     uint16_t value;                                                             
     uint64_t sum = 0;                                                           
     uint16_t avg;                                                                                                                       
