@@ -190,7 +190,7 @@ double getSensorValue(unsigned char channel){
 			break;
 	}
 }
-//추가바람	
+	
 void checkSensors(){
 	if(realTimeValue.temp[0] < settingValue.temp[0]){
 		isCold = 1;
@@ -209,6 +209,10 @@ void checkSensors(){
 	if(realTimeValue.humidity[0] > settingValue.humidity[1])
 		isWet = 1;
 	else isWet = 0;
+	if(realTimeValue.light[0] < settingValue.light[1])
+		isDark = 1;
+	else isDark = 0;
+	
 }
 
 double mcp_to_temperature(int adcAvg){
