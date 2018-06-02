@@ -51,6 +51,7 @@ int isDry;
 int isWet;
 //조도관련
 int isDark; 
+int isTooDark; //4방향 다 돌았는데도 어두울 때. 
 int direction;	//0~4(동,서,남,북)
 
 //센서 관련 초기화
