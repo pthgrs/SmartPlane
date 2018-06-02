@@ -2,7 +2,7 @@
 
 int dir = CENTER ;
 int initMotor(void){
-	//if(wiringPiSetup() == -1) return 1;                                         
+	if(wiringPiSetup() == -1) return 1;                                         
 	softPwmCreate(SERVO_PIN, 0, 200);  
 	return 0; 
 }
