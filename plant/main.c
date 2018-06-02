@@ -37,6 +37,10 @@ int init(void){
 	//아날로그 센서 초기화
 	if(initSensor(CS_MCP3208) == -1)
 		return -2;
+	
+	//모터 초기화
+	if(initMotor() == -1)
+		return -3;
 	//미연결 상태로
 	client = -1;
 	
