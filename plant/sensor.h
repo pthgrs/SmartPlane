@@ -50,6 +50,7 @@ int isHot;
 int isDry;
 int isWet;
 //조도관련
+int isDark; 
 int direction;	//0~4(동,서,남,북)
 
 //센서 관련 초기화
