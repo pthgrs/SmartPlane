@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdarg.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/socket.h>
@@ -7,6 +8,7 @@
 #include <bluetooth/sdp_lib.h>
 #include <bluetooth/rfcomm.h>
 
+#include "server.h"
 
 bdaddr_t bdaddr_any = {0, 0, 0, 0, 0, 0};
 bdaddr_t bdaddr_local = {0, 0, 0, 0xff, 0xff, 0xff};
@@ -156,9 +158,8 @@ sdp_session_t *register_service(uint8_t rfcomm_channel) {
     return session;
 }
 
-
 int init_server() {
-    int port = 3, result, sock, client, bytes_read, bytes_sent;
+    int port = 3, result, client, bytes_read, bytes_sent;
     struct sockaddr_rc loc_addr = { 0 }, rem_addr = { 0 };
     char buffer[1024] = { 0 };
     socklen_t opt = sizeof(rem_addr);
@@ -221,6 +222,33 @@ void write_server(int client, char *message) {
     }
 }
 
+void make_message(int mode, ...){
+	memset(SNDmessage,0,sizeof(char));
+	va_list ap;
+	va_start(ap,mode);
+	if(mode == MODE_ALARM_TEMP){
+		double temp = va_arg(ap,double);
+		va_end(ap);
+		sprintf(SNDmessage,"%d>%lf<",mode,temp);
+	}
+	else if(mode == MODE_ALARM_HUMIDITY){
+		double humi = va_arg(ap,double);
+		va_end(ap);
+		sprintf(SNDmessage,"%d>%lf<",mode,humi);
+	}
+	if(mode == MODE_SEND_DATA){
+		double temp = va_arg(ap,double);
+		double humi = va_arg(ap,double);
+		double light = va_arg(ap,double);
+		va_end(ap);
+		sprintf(SNDmessage,"%d>%lf,%lf,%lf<",mode,temp,humi,light);
+	}
+}
+
+void disConnect(){
+	close(sock);
+}
+/*
 int main()
 {
     int client = init_server();
@@ -237,3 +265,4 @@ int main()
         write_server(client, recv_message);
     }
 }
+*/
