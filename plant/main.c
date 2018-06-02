@@ -1,6 +1,6 @@
 #include "smartPlant.h"
 
-extern int dir; //from motor.c
+//extern int dir; //from motor.c
 int dirs[4] = { CENTER, RIGHT, LEFT, OTHERSIDE } ; 
 
 //초기화 함수
@@ -102,6 +102,24 @@ void* sensorThread(void* data){
 }
 
 void* motorThread(void* data){
+	static int index = 0; 
+	static int count = 0; 
+	
+	//사용자방향 입력에 대한 부분은 나중에 넣을게요. 
+	while(1){
+		if(isDark && !isTooDark){ 
+			index = (index+1)%4;
+			count ++; 
+
+			MotorControl(dirs[index]); 
+			
+			//4방향 다 돌았는데도 어두울 때. 
+			if(count %4 == 0) isTooDark = 1; 
+			
+		}
+	
+	}
+	
 }
 
 void checkAlarm(int client){
@@ -115,6 +133,13 @@ void checkAlarm(int client){
 			double humi = getSensorValue(HUMIDITY_CHANNEL);
 			make_message(MODE_ALARM_TEMP,humi);
 			write_server(client, SNDmessage);
+		}
+		
+		if(isTooDark){
+			//화분 위치를 옮길 필요가 있을 때. 
+			
+			//경고메시지를 보내는 모드를 추가해주실 수 있을까요? 
+			isTooDark = 0; 
 		}
 	}
 }
