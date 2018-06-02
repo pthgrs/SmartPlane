@@ -231,11 +231,13 @@ double mcp_to_humidity(int adcAvg){
 	humi = humiMargin / sampleMax * 100;
 	return humi;
 }
-//추가바람
+
 double mcp_to_light(int adcAvg){
 	double light;
 	double sampleMax = MCP3208_MAX;
-	//변환식 필요 
+	//가렸을 때 0~50. 기준값은 50정도로 보면 될듯? 
+	//형광등 기준 책상에 있을 때 50-75정도 나옴. 
+	light = (double)adcAvg ; 
 	return light;
 }
 
