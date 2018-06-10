@@ -50,6 +50,7 @@ int init(void){
 	isCold = 0;
 	isWet = 0;
 	isDry = 0;
+	isDark = 0; 
 
 	return 0;
 }
