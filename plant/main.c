@@ -53,6 +53,7 @@ int init(void){
 	isWet = 0;
 	isDry = 0;
 	isDark = 0; 
+	isTooDark = 0; 
 
 	return 0;
 }
