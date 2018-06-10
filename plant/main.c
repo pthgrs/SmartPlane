@@ -110,6 +110,7 @@ void* motorThread(void* data){
 	
 	//사용자방향 입력에 대한 부분은 나중에 넣을게요. 
 	while(1){
+		pthread_mutex_lock(&mutex_lock);
 		if(isDark && !isTooDark){ 
 			index = (index+1)%4;
 			count ++; 
@@ -120,7 +121,9 @@ void* motorThread(void* data){
 			if(count %4 == 0) isTooDark = 1; 
 			
 		}
-	
+		pthread_mutex_unlock(&mutex_lock);
+		
+		delay(SENSOR_TERM*3);	 //센서 3번 체크할 동안 멈춰있도록.
 	}
 	
 }
