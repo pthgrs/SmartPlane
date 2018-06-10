@@ -5,7 +5,7 @@
 #include<stdio.h>
 #include<softPwm.h>
 
-#define SERVO 1 //GPIO 18 
+#define SERVO 18 //GPIO 18 
 
 #define CENTER 15 //center.
 #define RIGHT 24 //right 90
