@@ -2,7 +2,7 @@
 
 int dir = CENTER ;
 int initMotor(void){
-	if(wiringPiSetup() == -1) return -1;                                         
+	if(wiringPiSetupGpio() == -1) return -1;                                         
 	softPwmCreate(SERVO, 0, 200);  
 	softPwmWrite(SERVO,15); //방향 초기화. 
 	return 0; 
