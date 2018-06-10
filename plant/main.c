@@ -21,12 +21,14 @@ int main(void){
 	init();
 	int status;
 
-	pthread_t thread[2];
+	pthread_t thread[3];
 	pthread_create(&thread[0],NULL,serverThread,NULL);
 	pthread_create(&thread[1],NULL,sensorThread,NULL);
+	pthread_create(&thread[2],NULL,mortorThread,NULL);
 
 	pthread_join(thread[0],(void**)&status);
 	pthread_join(thread[1],(void**)&status);
+	pthread_join(thread[2],(void**)&status); 
 	return 0;
 }
 
