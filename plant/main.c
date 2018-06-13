@@ -122,6 +122,11 @@ void* motorThread(void* data){
 			if(count %4 == 0) isTooDark = 1; 
 			
 		}
+		
+		if(isDry){
+		//펌프 동작.
+		}
+					
 		pthread_mutex_unlock(&mutex_lock);
 		
 		delay(SENSOR_TERM*3);	 //센서 3번 체크할 동안 멈춰있도록.
