@@ -65,7 +65,7 @@ int initSensor(unsigned char gpio){
 	isHot = 0; isCold=0;
 	isDry=0; isWet = 0; isWater = 0;
 	delay(1000);
-	WATER_DIFF = 1  * 5 * 2100;
+	WATER_DIFF = 10  * 60 * 2100;
         isDark = 0;  isTooDark=0;	
 	return 0;
 }
