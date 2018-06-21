@@ -6,7 +6,7 @@
 #include<softPwm.h>
 
 #define SERVO 18 //GPIO 18 
-#define PUMP_GPIO 5 //물 펌프 gpio
+#define PUMP_GPIO 21 //물 펌프 gpio
 
 #define CENTER 15 //center.
 #define RIGHT 24 //right 90
