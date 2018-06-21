@@ -1,7 +1,7 @@
 #include "smartPlant.h"
 
 //extern int dir; //from motor.c
-int dirs[4] = { CENTER, RIGHT, LEFT, OTHERSIDE } ; 
+int dirs[4] = { CENTER, RIGHT, LEFT}; //, OTHERSIDE } ; 
 
 //초기화 함수
 int init(void);
@@ -48,13 +48,6 @@ int init(void){
 	
 	//뮤텍스 초기화(항상 0 리턴)
 	pthread_mutex_init(&mutex_lock, NULL);
-	isHot = 0;
-	isCold = 0;
-	isWet = 0;
-	isDry = 0;
-	isDark = 0; 
-	isTooDark = 0; 
-
 	return 0;
 }
 void* serverThread(void* data){
@@ -109,22 +102,28 @@ void* motorThread(void* data){
 	static int index = 0; 
 	static int count = 0; 
 	
-	//사용자방향 입력에 대한 부분은 나중에 넣을게요. 
+	//사용자방향 입력에 대한 부분은 나중에 추가할 것. 
 	while(1){
 		pthread_mutex_lock(&mutex_lock);
 		if(isDark && !isTooDark){ 
-			index = (index+1)%4;
+			index = (index+1)%3;
 			count ++; 
 
 			MotorControl(dirs[index]); 
 			
-			//4방향 다 돌았는데도 어두울 때. 
+			//3방향 다 돌았는데도 어두울 때. 
 			if(count %4 == 0) isTooDark = 1; 
 			
 		}
-		
+		//pump 동작	
 		if(isDry){
-		//펌프 동작.
+		if(!isWater){
+		printf("물줍니다\n");
+			doWater(waterAmount);
+			waterTime = clock();
+			isWater = 1;
+		}
+
 		}
 					
 		pthread_mutex_unlock(&mutex_lock);
@@ -161,9 +160,7 @@ void parsing(int client, char* message){
 	char data[100];
 #ifdef DEBUGM
 	printf("message : %s\n",message);
-#endif
 	sscanf(message,"%d>%s",&mode,data);
-#ifdef DEBUGM
 	printf("mode : %d, data : %s\n",mode,data);
 #endif
 	if(mode == MODE_GET_DATA){

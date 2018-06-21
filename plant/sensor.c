@@ -62,6 +62,11 @@ int initSensor(unsigned char gpio){
 		return -1;
 	CS_MCP3208 = gpio;
 	pinMode(CS_MCP3208, OUTPUT);
+	isHot = 0; isCold=0;
+	isDry=0; isWet = 0; isWater = 0;
+	delay(1000);
+	WATER_DIFF = 1  * 5 * 2100;
+        isDark = 0;  isTooDark=0;	
 	return 0;
 }
 
@@ -192,6 +197,11 @@ double getSensorValue(unsigned char channel){
 }
 	
 void checkSensors(){
+	printf("WaterTime : %d clock : %d\n",waterTime,clock());
+	printf("water DIFF : %d\n",WATER_DIFF);
+	if((clock() - waterTime) > WATER_DIFF){
+		isWater = 0;
+	}
 	if(realTimeValue.temp[0] < settingValue.temp[0]){
 		isCold = 1;
 		#ifdef DEBUG
@@ -206,8 +216,12 @@ void checkSensors(){
 	if(realTimeValue.humidity[0] < settingValue.humidity[0])
 		isDry = 1;
 	else isDry = 0;
-	if(realTimeValue.humidity[0] > settingValue.humidity[1])
-		isWet = 1;
+	if(realTimeValue.humidity[0] > settingValue.humidity[1]){
+		if(isWater){
+			isWet = 0;
+		}else isWet = 1;
+				
+	}
 	else isWet = 0;
 	if(realTimeValue.light[0] < settingValue.light[1])
 		isDark = 1;

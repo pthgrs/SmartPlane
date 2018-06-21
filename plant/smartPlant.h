@@ -5,7 +5,7 @@
 #include <pthread.h>
 #include "motor.h"
 #include "sensor.h"
-#include "bluetooth/server.h"
+#include "server.h"
 
 /****GPIO PIN NUMBER****/
 #define CS_MCP3208 8	//Analog input CE0

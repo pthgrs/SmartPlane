@@ -6,6 +6,7 @@
 #include<softPwm.h>
 
 #define SERVO 18 //GPIO 18 
+#define PUMP_GPIO 5 //물 펌프 gpio
 
 #define CENTER 15 //center.
 #define RIGHT 24 //right 90
@@ -14,6 +15,11 @@
 
 int initMotor(void);
 int getMotorDir(void); 
-void MotorControl(int dir); 
+void MotorControl(int dir);
+void doWater(double amount);
+double getWaterSettingValue();
+int setWaterSettingValue(double);
+
+double waterAmount;
 
 #endif /* __MOTOR_H__ */ 

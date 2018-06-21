@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 
 //wiringPi관련
 #include <wiringPi.h>
@@ -49,6 +50,9 @@ int isHot;
 //습도관련
 int isDry;
 int isWet;
+int isWater;
+clock_t waterTime;
+clock_t WATER_DIFF;
 //조도관련
 int isDark; 
 int isTooDark; //4방향 다 돌았는데도 어두울 때. 
