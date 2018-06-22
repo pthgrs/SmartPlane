@@ -20,6 +20,8 @@ void* motorThread(void*);
 int main(void){
 	init();
 	int status;
+	isMessage = 0;
+	messageTime = 0;
 
 	pthread_t thread[3];
 	pthread_create(&thread[0],NULL,serverThread,NULL);
@@ -87,11 +89,12 @@ void* sensorThread(void* data){
 		pthread_mutex_lock(&mutex_lock);
 		light = readSensorValue(LIGHT_CHANNEL);
 		setSensorValue(LIGHT_CHANNEL,light);
+
+	//	printf("light : %lf\n", light); 
+		
 		pthread_mutex_unlock(&mutex_lock);
-		#ifdef DEBUG
-			printf("%d %d %d %d\n",
-				isHot, isCold, isWet, isDry);
-		#endif	
+	//		printf("%d %d %d %d\n",
+	//			isHot, isCold, isWet, isDry);
 		checkSensors();
 		checkAlarm(client);
 		delay(SENSOR_TERM);		
@@ -101,7 +104,7 @@ void* sensorThread(void* data){
 void* motorThread(void* data){
 	static int index = 0; 
 	static int count = 0; 
-	
+
 	//사용자방향 입력에 대한 부분은 나중에 추가할 것. 
 	while(1){
 		pthread_mutex_lock(&mutex_lock);
@@ -110,46 +113,60 @@ void* motorThread(void* data){
 			count ++; 
 
 			MotorControl(dirs[index]); 
-			
+
 			//3방향 다 돌았는데도 어두울 때. 
 			if(count %4 == 0) isTooDark = 1; 
-			
+
 		}
 		//pump 동작	
 		if(isDry){
-		if(!isWater){
-		printf("물줍니다\n");
-			doWater(waterAmount);
-			waterTime = clock();
-			isWater = 1;
-		}
+			if(!isWater){
+				printf("물줍니다\n");
+				doWater(waterAmount);
+				waterTime = clock();
+				isWater = 1;
+			}
 
 		}
-					
+
 		pthread_mutex_unlock(&mutex_lock);
-		
+
 		delay(SENSOR_TERM*3);	 //센서 3번 체크할 동안 멈춰있도록.
 	}
 	
 }
 
 void checkAlarm(int client){
-	if(client != -1){
+	if(isMessage){
+		if((clock() - messageTime) < MESSAGE_TERM * 2100)
+		return;
+		else isMessage = 0;
+	}
+	else{	
+		messageTime = clock();
+	       	isMessage = 1;
+	}
+	if(client != -1 && !isMessage){
 		if(isHot || isCold){
 			double temp = getSensorValue(TEMP_CHANNEL);
+			//printf("temp : %lf\n",temp);
 			make_message(MODE_ALARM_TEMP,temp);
 			write_server(client, SNDmessage);
+			isHot = 0;
+			isCold = 0;
 		}
 		if(isDry || isWet){
 			double humi = getSensorValue(HUMIDITY_CHANNEL);
 			make_message(MODE_ALARM_TEMP,humi);
 			write_server(client, SNDmessage);
+			isDry = 0;
+			isWet = 0;
 		}
 		
 		if(isTooDark){
-			//화분 위치를 옮길 필요가 있을 때. 
-			
-			//경고메시지를 보내는 모드를 추가해주실 수 있을까요? 
+			double light = getSensorValue(LIGHT_CHANNEL);
+			make_message(MODE_ALARM_LIGHT,light);
+			write_server(client, SNDmessage);
 			isTooDark = 0; 
 		}
 	}
@@ -158,11 +175,9 @@ void checkAlarm(int client){
 void parsing(int client, char* message){
 	int mode;
 	char data[100];
-#ifdef DEBUGM
-	printf("message : %s\n",message);
+	//printf("message : %s\n",message);
 	sscanf(message,"%d>%s",&mode,data);
-	printf("mode : %d, data : %s\n",mode,data);
-#endif
+	//printf("mode : %d, data : %s\n",mode,data);
 	if(mode == MODE_GET_DATA){
 		double temp = getSensorValue(TEMP_CHANNEL);
 		double humi = getSensorValue(HUMIDITY_CHANNEL);
@@ -174,13 +189,12 @@ void parsing(int client, char* message){
 		double sensorD, min, max;
 		sscanf(data,"%lf,%lf,%lf<",&sensorD,&min,&max);
 		sensor = sensorD;
-#ifdef DEBUGM
-		printf("sensor : %d, min : %lf max: %lf\n",
-				sensor,min,max);
-#endif
+	//	printf("sensor : %d, min : %lf max: %lf\n",
+	//			sensor,min,max);
 		pthread_mutex_lock(&mutex_lock);
 		setSettingValue(sensor,min,max);
 		getSettingValue();
+		make_message(MODE_SUCCESS);
 		pthread_mutex_unlock(&mutex_lock);
 	}
 } 

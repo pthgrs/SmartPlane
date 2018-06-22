@@ -150,7 +150,11 @@ double readSensorValue(unsigned char channel){
 			value = mcp_to_humidity(adcValue);
 			break;
 		case LIGHT_CHANNEL:
-			value = mcp_to_light(adcValue);
+			value = 0;
+			for(int i=0; i< 30; i++){
+				value += mcp_to_light(adcValue);
+			}
+			value = value/ 30;
 			break;
 		default:
 			return -1;
@@ -197,8 +201,6 @@ double getSensorValue(unsigned char channel){
 }
 	
 void checkSensors(){
-	printf("WaterTime : %d clock : %d\n",waterTime,clock());
-	printf("water DIFF : %d\n",WATER_DIFF);
 	if((clock() - waterTime) > WATER_DIFF){
 		isWater = 0;
 	}
@@ -248,10 +250,25 @@ double mcp_to_humidity(int adcAvg){
 
 double mcp_to_light(int adcAvg){
 	double light;
+
+	double analogV; 
+	double r = 815 ; 
+	
+	double V ;
 	double sampleMax = MCP3208_MAX;
 	//가렸을 때 0~50. 기준값은 50정도로 보면 될듯? 
-	//형광등 기준 책상에 있을 때 50-75정도 나옴. 
-	light = (double)adcAvg ; 
+	//형광등 기준 책상에 있을 때 50-75정도 나옴.
+		
+	analogV = (double)adcAvg ;
+	V = analogV* VOLTAGE / 1032.0 ; 
+
+	double i = V / r; //1k 옴 전류 계산 암페어. 
+
+	double cdsV = VOLTAGE - V ; //조도센서 전압 계산
+	double cdsR = cdsV/i ; //조도센서 저항 게산. 
+
+	light = cdsR/1000;
+		
 	return light;
 }
 

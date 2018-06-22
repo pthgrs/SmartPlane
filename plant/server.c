@@ -236,6 +236,11 @@ void make_message(int mode, ...){
 		va_end(ap);
 		sprintf(SNDmessage,"%d>%lf<",mode,humi);
 	}
+	else if(mode == MODE_ALARM_LIGHT){
+		double light = va_arg(ap,double);
+		va_end(ap);
+		sprintf(SNDmessage,"%d>%lf<",mode,light);
+	}
 	if(mode == MODE_SEND_DATA){
 		double temp = va_arg(ap,double);
 		double humi = va_arg(ap,double);
@@ -243,6 +248,11 @@ void make_message(int mode, ...){
 		va_end(ap);
 		sprintf(SNDmessage,"%d>%lf,%lf,%lf<",mode,temp,humi,light);
 	}
+	if(mode == MODE_FAIL || mode == MODE_SUCCESS){
+		va_end(ap);
+		sprintf(SNDmessage,"%d<",mode);
+	}
+
 }
 
 void disConnect(){
